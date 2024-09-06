@@ -11,19 +11,22 @@ struct HourlyForecastView: View {
     let forecastDay: Forecastday
     
     var body: some View {
-        VStack {
-            Text("Hourly Forecast for \(forecastDay.date)")
-                .font(.headline)
-                .padding()
-            
-            List(forecastDay.hour, id: \.time) { hour in
-                HStack {
-                    Text(hour.time)
-                        .frame(width: 100, alignment: .leading)
-                    let baseURL = "https:"
-                    let iconPath = hour.condition.icon
-                    let fullURLString = baseURL + iconPath
-                    AsyncImage(url: URL(string:fullURLString)) { phase in
+   
+        ZStack{
+    
+            VStack {
+                Text("Hourly Forecast for \(forecastDay.date)")
+                    .font(.headline)
+                    .padding()
+                
+                List(forecastDay.hour, id: \.time) { hour in
+                    HStack {
+                        Text(hour.time)
+                            .frame(width: 100, alignment: .leading)
+                        let baseURL = "https:"
+                        let iconPath = hour.condition.icon
+                        let fullURLString = baseURL + iconPath
+                        AsyncImage(url: URL(string:fullURLString)) { phase in
                             switch phase {
                             case .empty:
                                 ProgressView()
@@ -33,7 +36,7 @@ struct HourlyForecastView: View {
                                     .resizable()
                                     .scaledToFit()
                                     .frame(width: 50, height: 50)
-                                    
+                                
                             case .failure:
                                 Image(systemName: "exclamationmark.icloud")
                                     .resizable()
@@ -43,11 +46,12 @@ struct HourlyForecastView: View {
                                 EmptyView()
                             }
                         }
-                    Text("\(String(format: "%.0f", hour.tempC))°C")
-                        .frame(width: 100, alignment: .trailing)
+                        Text("\(String(format: "%.0f", hour.tempC))°C")
+                            .frame(width: 100, alignment: .trailing)
+                    }
                 }
+                .listStyle(PlainListStyle())
             }
-            .listStyle(PlainListStyle())
         }
     }
 }

@@ -11,14 +11,13 @@ struct ContentView: View {
     @State private var weatherResponse: WeatherResponse?
 
     var body: some View {
+
         NavigationView {
+
             ZStack {
-                Color.white
-                    .ignoresSafeArea()
-                    .onAppear {
-                        loadWeather()
-                    }
-                
+                Image("1")
+                        .resizable()
+                        .ignoresSafeArea()
                 if let weather = weatherResponse {
                     VStack {
                         VStack {
@@ -139,12 +138,20 @@ struct ContentView: View {
                             }
                             
                         }
+       
                          }
+                
                      } else {
                          ProgressView("Loading...")
                              .progressViewStyle(CircularProgressViewStyle())
                      }
+           
                  }
+            .onAppear {
+                loadWeather()
+                
+            }
+        
              }
          }
 
