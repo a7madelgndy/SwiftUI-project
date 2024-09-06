@@ -106,6 +106,39 @@ struct ContentView: View {
                                  }
                              }
                              .padding()
+                        VStack {
+                            HStack{
+                                Spacer()
+                                VStack{
+                                    Text("Visabilty")
+                                   // weather.current.visKM
+                                    Text("\(String(format: "%.0f", weather.current.visKM)) Km")
+                                }
+                                Spacer()
+                                VStack{
+                                    Text("HUMIDITY")
+                                    Text("\(String(format: "%.0f", weather.current.humidity)) %")
+                                }
+                                Spacer()
+                            }
+                            .padding(.bottom,40)
+                            
+                            HStack{
+                                Spacer()
+                                VStack{
+                                    Text("Feelies like")
+                                   // weather.current.visKM
+                                    Text("\(String(format: "%.0f", weather.current.feelslikeC)) ")
+                                }
+                                Spacer()
+                                VStack{
+                                    Text("perssuer")
+                                    Text("1,022")
+                                }
+                                Spacer()
+                            }
+                            
+                        }
                          }
                      } else {
                          ProgressView("Loading...")
@@ -120,7 +153,6 @@ struct ContentView: View {
         NetworkService.fetchedUsers { response in
             DispatchQueue.main.async {
                 self.weatherResponse = response
-                print("Image URL: \(response?.current.condition.icon)")
 
             }
         }
