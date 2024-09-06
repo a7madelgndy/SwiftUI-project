@@ -38,7 +38,10 @@ struct ContentView: View {
                                 .font(.system(size: 36))
                                 .bold()
                             
-                        AsyncImage(url: URL(string: weather.current.condition.icon)) { phase in
+                            let baseURL = "https:"
+                            let iconPath = weather.current.condition.icon
+                            let fullURLString = baseURL + iconPath
+                        AsyncImage(url: URL(string:fullURLString)) { phase in
                                 switch phase {
                                 case .empty:
                                     ProgressView()
@@ -47,7 +50,8 @@ struct ContentView: View {
                                     image
                                         .resizable()
                                         .scaledToFit()
-                                        .frame(width: 100, height: 100)
+                                        .frame(width: 50, height: 50)
+                                        
                                 case .failure:
                                     Image(systemName: "exclamationmark.icloud")
                                         .resizable()
@@ -71,8 +75,29 @@ struct ContentView: View {
                                              HStack {
                                                  Text(forecastday.date)
                                                      .frame(width: 130)
-                                                 Image(systemName: "cloud.fill")
-                                                     .font(.largeTitle)
+                                                 let baseURL = "https:"
+                                                 let iconPath = forecastday.day.condition.icon
+                                                 let fullURLString = baseURL + iconPath
+                                                 AsyncImage(url: URL(string:fullURLString)) { phase in
+                                                         switch phase {
+                                                         case .empty:
+                                                             ProgressView()
+                                                                 .progressViewStyle(CircularProgressViewStyle())
+                                                         case .success(let image):
+                                                             image
+                                                                 .resizable()
+                                                                 .scaledToFit()
+                                                                 .frame(width: 50, height: 50)
+                                                                 
+                                                         case .failure:
+                                                             Image(systemName: "exclamationmark.icloud")
+                                                                 .resizable()
+                                                                 .scaledToFit()
+                                                                 .frame(width: 100, height: 100)
+                                                         @unknown default:
+                                                             EmptyView()
+                                                         }
+                                                     }
                                                  Text("H:\(String(format: "%.0f", forecastday.day.maxtempC))° L:\(String(format: "%.0f", forecastday.day.mintempC))°")
                                                      .frame(width: 130)
                                              }
@@ -95,6 +120,8 @@ struct ContentView: View {
         NetworkService.fetchedUsers { response in
             DispatchQueue.main.async {
                 self.weatherResponse = response
+                print("Image URL: \(response?.current.condition.icon)")
+
             }
         }
     }
